@@ -1,19 +1,27 @@
-
 import { blogPosts } from '@/data/posts'
 import CommentSection from '@/components/CommentSection'
 import Link from 'next/link'
 import Image from 'next/image'
 import { notFound } from 'next/navigation'
 
+// Static Path Generation (For Static Rendering)
 export async function generateStaticParams() {
   return blogPosts.map((post) => ({
     slug: post.slug,
   }))
 }
 
-export default function BlogPost({ params }: { params: { slug: string } }) {
+interface BlogPostProps {
+  params: {
+    slug: string;
+  };
+}
+
+export default function BlogPost({ params }: BlogPostProps) {
+  // Find the post based on the slug
   const post = blogPosts.find((p) => p.slug === params.slug)
 
+  // If the post doesn't exist, show a 404 error page
   if (!post) {
     notFound()
   }
